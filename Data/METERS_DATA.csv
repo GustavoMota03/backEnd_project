@@ -1,0 +1,158 @@
+ID	Name	Zone	Supplied by	Units	Type
+Caudal_Puerto	Caudal Puerto	System		m3h	Flow
+Caudal_Interior	Caudal Interior	System		m3h	Flow
+Caudal_Entrada_Deposito_Sant_Elm	Caudal Entrada Depósito Sant Elm	System		m3h	Flow
+Caudal_Habana	Caudal Habana	System		m3h	Flow
+Presion_Impulsion_Sant_Elm	Presion Impulsion Sant Elm	System		bar	Pressure
+Caudal_Cargadero	Caudal Cargadero	System		m3h	Flow
+Nivel_Deposito_Sant_Elm	Nivel Deposito Sant Elm	System		%	Level
+Caudal_Salida_Deposito_Sant_Elm	Caudal Salida Deposito Sant Elm	System		m3h	Flow
+Caudal_Impulsion_Sant_Elm	Caudal Impulsion Sant Elm	System		m3h	Flow
+300_BaseformClimate_Rain	300_BaseformClimate_Rain	System		mm	Rainfall
+Nivel_Deposito_Andritxol	Nivel Deposito Andritxol	System		%	Level
+G17WA147180Y	G17WA147180Y (testing)	System			Flow Consumer
+Presion_Puerto	Presion Puerto	System		bar	Pressure
+Caudal_Camp_de_Mar_General	Caudal Camp de Mar General	System		m3h	Flow
+Caudal_Andratx_General	Caudal Andratx General	System		m3h	Flow
+300_BaseformClimate_Temp	300_BaseformClimate_Temp	System		ºC	Temperature
+Presion_Habana	Presion Habana	System		bar	Pressure
+Caudal_AND_PUEBLO_GALICIA	Caudal AND_PUEBLO_GALICIA	S6		m3h	Flow
+Presion_AND_PUEBLO_GALICIA	Presion AND_PUEBLO_GALICIA	S6		bar	Pressure
+Presion_previa_AND_PUEBLO_GALICIA	Presion previa AND_PUEBLO_GALICIA	S6		bar	Pressure
+ZONE_S6	Zone AND_PUEBLO_GALICIA	S6	S6	m3h	Flow
+BALANCE_S6	Balance AND_PUEBLO_GALICIA	S6	S6	m3h	Flow
+BALANCE_S8	Balance AND_PUEBLO_BISCAIA	S8	S8	m3h	Flow
+Presion_AND_PUEBLO_BISCAIA	Presion AND_PUEBLO_BISCAIA	S8		bar	Pressure
+Caudal_AND_PUEBLO_BISCAIA	Caudal AND_PUEBLO_BISCAIA	S8		m3h	Flow
+ZONE_S8	Zone AND_PUEBLO_BISCAIA	S8	S8	m3h	Flow
+Subsector_Caudal_EBAP_Cala_Moragues	Subsector Caudal EBAP Cala Moragues	S31	S31	m3h	Flow
+Subsector_Caudal_Tudo	Subsector Caudal Tudo	S31	S31	m3h	Flow
+Presion_PORT_MORAGUES	Presion PORT_MORAGUES	S31		bar	Pressure
+Subsector_Caudal_Verderol-Tudo	Subsector Caudal Verderol-Tudo (eliminar)	S31	S31	m3h	Flow
+BALANCE_S31	Balance PORT_MORAGUES	S31	S31	m3h	Flow
+ZONE_S31	Zone PORT_MORAGUES	S31	S31	m3h	Flow
+Subsector_Presion_EBAP_Cala_Moragues	Subsector Presion EBAP Cala Moragues	S31		bar	Pressure
+Subsector_Caudal_Metlera-Ropit	Subsector Caudal Metlera-Ropit	S31	S31	m3h	Flow
+Subsector_Caudal_Verderol	Subsector Caudal Verderol	S31	S31	m3h	Flow
+Caudal_PORT_MORAGUES	Caudal PORT_MORAGUES	S31		m3h	Flow
+ZONE_S4	Zone AND_PUEBLO_SAFONT	S4	S4	m3h	Flow
+Presion_AND_PUEBLO_SAFONT	Presion AND_PUEBLO_SAFONT	S4		bar	Pressure
+BALANCE_S4	Balance AND_PUEBLO_SAFONT	S4	S4	m3h	Flow
+Caudal_AND_PUEBLO_SAFONT	Caudal AND_PUEBLO_SAFONT	S4		m3h	Flow
+Presión_AND_PUEBLO_CENTROSUR	Presión AND_PUEBLO_CENTROSUR	S11		bar	Pressure
+Presion_previa_AND_PUEBLO_CENTROSUR	Presion previa AND_PUEBLO_CENTROSUR	S11		bar	Pressure
+BALANCE_S11	Balance AND_PUEBLO_CENTROSUR	S11	S11	m3h	Flow
+ZONE_S11	Zone AND_PUEBLO_CENTROSUR	S11	S11	m3h	Flow
+Caudal_AND_PUEBLO_CENTROSUR	Caudal AND_PUEBLO_CENTROSUR	S11		m3h	Flow
+Presion_PORT_COSTA_PAGELL	Presion PORT_COSTA_PAGELL	S20		bar	Pressure
+ZONE_S20	Zone PORT_COSTA_PAGELL	S20	S20	m3h	Flow
+BALANCE_S20	Balance PORT_COSTA_PAGELL	S20	S20	m3h	Flow
+Caudal_PORT_COSTA_PAGELL	Caudal PORT_COSTA_PAGELL	S20		m3h	Flow
+Caudal_PORT_COSTA_CONGRE	Caudal PORT_COSTA_CONGRE	S21		m3h	Flow
+ZONE_S21	Zone PORT_COSTA_CONGRE	S21	S21	m3h	Flow
+BALANCE_S21	Balance PORT_COSTA_CONGRE	S21	S21	m3h	Flow
+Presion_PORT_COSTA_CONGRE	Presion PORT_COSTA_CONGRE	S21		bar	Pressure
+Subsector_Presion_EBAP_Sa_Coma	Subsector Presion EBAP Sa Coma	S5		bar	Pressure
+Subsector_Presion_previa_EBAP_Sa_Coma	Subsector Presion previa EBAP Sa Coma	S5		bar	Pressure
+Presion_AND_PUEBLO_SACOMA	Presion AND_PUEBLO_SACOMA	S5		bar	Pressure
+Caudal_AND_PUEBLO_SACOMA	Caudal AND_PUEBLO_SACOMA	S5		m3h	Flow
+Subsector_Caudal_EBAP_Sa_Coma	Subsector Caudal EBAP Sa Coma	S5	S5	m3h	Flow
+BALANCE_S5	Balance AND_PUEBLO_SACOMA	S5	S5	m3h	Flow
+ZONE_S5	Zone AND_PUEBLO_SACOMA	S5	S5	m3h	Flow
+Presion_CAMP_GOLF	Presion CAMP_GOLF	S15		bar	Pressure
+Presion_previa_CAMP_GOLF	Presion previa CAMP_GOLF	S15		bar	Pressure
+BALANCE_S15	Balance CAMP_GOLF	S15	S15	m3h	Flow
+Caudal_CAMP_GOLF	Caudal CAMP_GOLF	S15		m3h	Flow
+ZONE_S15	Zone CAMP_GOLF	S15	S15	m3h	Flow
+DIF_S18_NORD	Dif S18 Nord	S18	S18	m3h	Flow
+BALANCE_S18	Balance PORT_NORD	S18	S18	m3h	Flow
+Presion_PORT_NORD	Presion PORT_NORD	S18		bar	Pressure
+ZONE_S18	Zone PORT_NORD	S18	S18	m3h	Flow
+Caudal_PORT_NORD	Caudal PORT_NORD	S18		m3h	Flow
+Presion_PORT_MONTPORT	Presion PORT_MONTPORT	S19		bar	Pressure
+BALANCE_S19	Balance PORT_MONTPORT	S19	S19	m3h	Flow
+Caudal_PORT_MONTPORT	Caudal PORT_MONTPORT	S19		m3h	Flow
+ZONE_S19	Zone PORT_MONTPORT	S19	S19	m3h	Flow
+Presion_AND_PUEBLO_CENTRONORTE	Presion AND_PUEBLO_CENTRONORTE	S10		bar	Pressure
+Caudal_AND_PUEBLO_CENTRONORTE	Caudal AND_PUEBLO_CENTRONORTE	S10		m3h	Flow
+ZONE_S10	Zone AND_PUEBLO_CENTRONORTE	S10	S10	m3h	Flow
+BALANCE_S10	Balance AND_PUEBLO_CENTRONORTE	S10	S10	m3h	Flow
+ZONE_S9	Zone AND_PUEBLO_CASVIDALS	S9	S9	m3h	Flow
+BALANCE_S9	Balance AND_PUEBLO_CASVIDALS	S9	S9	m3h	Flow
+Presion_AND_PUEBLO_CASVIDALS	Presion AND_PUEBLO_CASVIDALS	S9		bar	Pressure
+Caudal_AND_PUEBLO_CASVIDALS	Caudal AND_PUEBLO_CASVIDALS	S9		m3h	Flow
+Presion_AND_PUEBLO_SONLLUIS	Presion AND_PUEBLO_SONLLUIS	S3		bar	Pressure
+Caudal_AND_PUEBLO_SONLLUIS	Caudal AND_PUEBLO_SONLLUIS	S3		m3h	Flow
+BALANCE_S3	Balance AND_PUEBLO_SONLLUIS	S3	S3	m3h	Flow
+ZONE_S3	Zone AND_PUEBLO_SONLLUIS	S3	S3	m3h	Flow
+Presion_PORT_NORIA	Presion PORT_NORIA	S29		bar	Pressure
+Presion_ramal_reducido_PORT_NORIA	Presion ramal reducido PORT_NORIA	S29		bar	Pressure
+BALANCE_S29	Balance PORT_NORIA	S29	S29	m3h	Flow
+ZONE_S29	Zone PORT_NORIA	S29	S29	m3h	Flow
+Caudal_PORT_NORIA	Caudal PORT_NORIA	S29		m3h	Flow
+Caudal_AND_PUEBLO_SONMAS	Caudal AND_PUEBLO_SONMAS	S2		m3h	Flow
+Presion_AND_PUEBLO_SONMAS	Presion AND_PUEBLO_SONMAS	S2		bar	Pressure
+ZONE_S2	Zone AND_PUEBLO_SONMAS	S2	S2	m3h	Flow
+BALANCE_S2	Balance AND_PUEBLO_SONMAS	S2	S2	m3h	Flow
+BALANCE_S28	Balance PORT_SESPART	S28	S28	m3h	Flow
+ZONE_S28	Zone PORT_SESPART	S28	S28	m3h	Flow
+Caudal_PORT_SESPART	Caudal PORT_SESPART	S28		m3h	Flow
+Presion_PORT_SESPART	Presion PORT_SESPART	S28		bar	Pressure
+Presion_previa_SANTELM_UNICO	Presion previa SANTELM_UNICO	S16		bar	Pressure
+ZONE_S16	Zone SANTELM_UNICO	S16	S16	m3h	Flow
+Presion_SANTELM_UNICO	Presion SANTELM_UNICO	S16		bar	Pressure
+Caudal_SANTELM_UNICO	Caudal SANTELM_UNICO	S16		m3h	Flow
+BALANCE_S16	Balance SANTELM_UNICO	S16	S16	m3h	Flow
+Presion_previa_PORT_NUCLEO	Presion previa PORT_NUCLEO	S26		bar	Pressure
+DIF_S26_S24	Dif S26 S24	S26	S26	m3h	Flow
+Presion_PORT_NUCLEO	Presion PORT_NUCLEO	S26		bar	Pressure
+Caudal_PORT_NUCLEO	Caudal PORT_NUCLEO	S26		m3h	Flow
+ZONE_S26	Zone PORT_NUCLEO	S26	S26	m3h	Flow
+BALANCE_S26	Balance PORT_NUCLEO	S26	S26	m3h	Flow
+Caudal_PORT_PICAROL	Caudal PORT_PICAROL	S27		m3h	Flow
+Presion_PORT_PICAROL	Presion PORT_PICAROL	S27		bar	Pressure
+Presion_ramal_reducido_PORT_PICAROL	Presion ramal reducido PORT_PICAROL	S27		bar	Pressure
+ZONE_S27	Zone PORT_PICAROL	S27	S27	m3h	Flow
+BALANCE_S27	Balance PORT_PICAROL	S27	S27	m3h	Flow
+Caudal_AND_PUEBLO_JCI	Caudal AND_PUEBLO_JCI	S1		m3h	Flow
+Presion_AND_PUEBLO_JCI	Presion AND_PUEBLO_JCI	S1		bar	Pressure
+ZONE_S1	Zone AND_PUEBLO_JCI	S1	S1	m3h	Flow
+BALANCE_S1	Balance AND_PUEBLO_JCI	S1	S1	m3h	Flow
+ZONE_S13	Zone CAMP_BINIORELLA	S13	S13	m3h	Flow
+BALANCE_S13	Balance CAMP_BINIORELLA	S13	S13	m3h	Flow
+Presion_CAMP_BINIORELLA	Presion CAMP_BINIORELLA	S13		bar	Pressure
+Caudal_CAMP_BINIORELLA	Caudal CAMP_BINIORELLA	S13		m3h	Flow
+Caudal_AND_PUEBLO_BERNAT	Caudal AND_PUEBLO_BERNAT	S7		m3h	Flow
+Subsector_Presion_previa_EBAP_Pantaleu	Subsector Presion previa EBAP Pantaleu	S7		bar	Pressure
+BALANCE_S7	Balance AND_PUEBLO_BERNAT	S7	S7	m3h	Flow
+ZONE_S7	Zone AND_PUEBLO_BERNAT	S7	S7	m3h	Flow
+Presion_AND_PUEBLO_BERNAT	Presion AND_PUEBLO_BERNAT	S7		bar	Pressure
+Subsector_Presion_EBAP_Pantaleu	Subsector Presion EBAP Pantaleu	S7		bar	Pressure
+Subsector_Caudal_EBAP_Pantaleu	Subsector Caudal EBAP Pantaleu	S7	S7	m3h	Flow
+BALANCE_S25	Balance PORT_SAMOLA	S25	S25	m3h	Flow
+ZONE_S25	Zone PORT_SAMOLA	S25	S25	m3h	Flow
+Caudal_PORT_SAMOLA	Caudal PORT_SAMOLA	S25	S26	m3h	Flow
+Presion_previa_PORT_SAMOLA	Presion previa PORT_SAMOLA	S25		bar	Pressure
+Presion_PORT_SAMOLA	Presion PORT_SAMOLA	S25		bar	Pressure
+Presion_previa_AND_PUEBLO_PAREPASQUAL	Presion previa AND_PUEBLO_PAREPASQUAL	S12		bar	Pressure
+Caudal_AND_PUEBLO_PAREPASQUAL	Caudal AND_PUEBLO_PAREPASQUAL	S12		m3h	Flow
+Presion_AND_PUEBLO_PAREPASQUAL	Presion AND_PUEBLO_PAREPASQUAL	S12		bar	Pressure
+BALANCE_S12	Balance AND_PUEBLO_PAREPASQUAL	S12	S12	m3h	Flow
+ZONE_S12	Zone AND_PUEBLO_PAREPASQUAL	S12	S12	m3h	Flow
+BALANCE_S14	Balance CAMP_NUCLEO	S14	S14	m3h	Flow
+Presion_previa_CAMP_NUCLEO	Presion previa CAMP_NUCLEO	S14		bar	Pressure
+ZONE_S14	Zone CAMP_NUCLEO	S14	S14	m3h	Flow
+Caudal_CAMP_NUCLEO	Caudal CAMP_NUCLEO	S14		m3h	Flow
+Presion_CAMP_NUCLEO	Presion CAMP_NUCLEO	S14		bar	Pressure
+Presion_PORT_CANBORRAS	Presion PORT_CANBORRAS	S30		bar	Pressure
+BALANCE_S30	Balance PORT_CANBORRAS	S30	S30	m3h	Flow
+Caudal_PORT_CANBORRAS	Caudal PORT_CANBORRAS	S30	S19	m3h	Flow
+ZONE_S30	Zone PORT_CANBORRAS	S30	S30	m3h	Flow
+ZONE_S17	Zone SARRACO_UNICO	S17	S17	m3h	Flow
+Presion_SARRACO_UNICO	Presion SARRACO_UNICO	S17		bar	Pressure
+BALANCE_S17	Balance SARRACO_UNICO	S17	S17	m3h	Flow
+Caudal_SARRACO_UNICO	Caudal SARRACO_UNICO	S17		m3h	Flow
+Presion_PORT_COSTA_TONYINA	Presion PORT_COSTA_TONYINA	S22_S23		bar	Pressure
+Caudal_PORT_COSTA_TONYINA	Caudal PORT_COSTA_TONYINA	S22_S23		m3h	Flow
+BALANCE_S22_S23	Balance PORT_COSTA_TONYINA	S22_S23	S22_S23	m3h	Flow
+ZONE_S22_S23	Zone PORT_COSTA_TONYINA	S22_S23	S22_S23	m3h	Flow
