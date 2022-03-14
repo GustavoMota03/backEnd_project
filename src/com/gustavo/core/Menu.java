@@ -9,21 +9,26 @@ import java.util.Scanner;
 
 
 public class Menu {
+    static String tmpZona;
     public static void processarMenu(String[] args) {
 
 
         HashMap<String, Zona> mapaZonas = new HashMap<>();
+        HashMap<String, Medidor> mapaMedidor = new HashMap<>();
 
-        loadData(mapaZonas);
+        loadData(mapaZonas, mapaMedidor);
 
-        Menu.main(mapaZonas);
+        Menu.main(mapaZonas, mapaMedidor);
 
 
     }
 
-    private static void loadData(HashMap<String, Zona> mapaZonas) {
+    private static void loadData(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor) {
+        //Zones | Zonas
+
+
         try {
-            File myObj = new File("Data/ZONES_DATA.csv");
+            File myObj = new File("Data/ZONES_DATA.tsv");
             Scanner myReader = new Scanner(myObj);
 
             boolean pastHeader = false;
@@ -38,6 +43,7 @@ public class Menu {
                 }
                 String[] split = data.split("\t");
                 //Limpar Args
+
                 for (int i = 0; i < split.length; i++) {
                     split[i] = split[i].trim();
                 }
@@ -46,11 +52,11 @@ public class Menu {
                 Zona novaZona = new Zona();
                 novaZona.setNome(split[0]);
                 novaZona.setCodGeo(split[1]);
-                //novaZona.set
+                tmpZona = split[2];
                 novaZona.setTotalCond(Double.parseDouble(split[3]));
                 novaZona.setPopulacao(((int)Double.parseDouble(split[4])));
 
-                mapaZonas.put(novaZona.getNome(), novaZona);
+                mapaZonas.put(novaZona.getCodGeo(), novaZona);
 
 
                 //for(int i=0; i<split.length; i++)
@@ -63,37 +69,84 @@ public class Menu {
             System.out.println("An error ocurred.");
             e.printStackTrace();
         }
+
+        //Meters | Medidores
+
+        try {
+            File myObj = new File("Data/METERS_DATA.tsv");
+            Scanner myReader = new Scanner(myObj);
+
+            boolean pastHeader = false;
+
+            while (myReader.hasNextLine()) {
+                //Ler Args
+                if (!pastHeader){
+                    pastHeader = true;
+                    continue;
+                }
+
+
+                String input = myReader.nextLine();
+                try {
+                    Medidor novoMedidor = Medidor.parse(input, mapaZonas);
+
+
+                    mapaMedidor.put(novoMedidor.getNomeMedidor(), novoMedidor);
+                }catch (Exception e){
+                    //e.printStackTrace();
+                }
+                //for(int i=0; i<split.length; i++)
+                //System.out.println(novaZona);
+                //}
+
+            }
+            myReader.close();
+        } catch (Exception e) {
+            System.out.println("An error ocurred.");
+            e.printStackTrace();
+        }
     }
 
-    private static void main(HashMap<String, Zona> mapaZonas) {
-        int choice = 0;
+    private static void main(HashMap<String, Zona> mapaZonas, HashMap<String, Medidor> mapaMedidor) {
+        int choice = 1;
 
         Scanner scanner = new Scanner(System.in);
-        loadData(mapaZonas);
+        loadData(mapaZonas, mapaMedidor);
 
-        while(true) {
+        while(choice != 0) {
             System.out.println("--------Menu--------");
             System.out.println("1 - Listar as Zonas");
-            System.out.println("2 - Adicionar Zonas");
+            System.out.println("2 - Listar Medidores");
+            System.out.println("3 - Adicionar Zonas");
+            System.out.println("0 - Fechar");
 
             choice = scanner.nextInt();
 
             switch (choice) {
                 case 1:
-                    listarZonas(mapaZonas);
+                    listZones(mapaZonas);
                     break;
                 case 2:
-                    addZonas(mapaZonas, scanner);
+                    listMedidor(mapaMedidor);
                     break;
-                case 99: return;
+                case 3:
+                    addZones(mapaZonas, scanner);
+                    break;
+
+                case 0:
+                    System.out.println("\nDebug Encerrado!\n");
+                    return;
                 default:
+                    System.out.println("Escolha uma das opções disponiveis!");;
             }
         }
 
 
     }
 
-    private static void listarZonas(HashMap<String, Zona> mapaZonas) {
+    //Zones | Zonas
+
+    private static void listZones(HashMap<String, Zona> mapaZonas) {
         System.out.println("PK\tGIS\tNAME\tPOPULATION");
         for (HashMap.Entry<String, Zona> zona :
                 mapaZonas.entrySet()) {
@@ -101,7 +154,15 @@ public class Menu {
         }
     }
 
-    public static void addZonas(HashMap<String, Zona> mapaZonas, Scanner scanner){
+    private static void listMedidor(HashMap<String, Medidor> mapaMedidor) {
+        System.out.println("PK\tGIS\tNAME\tPOPULATION");
+        for (HashMap.Entry<String, Medidor> medidor :
+                mapaMedidor.entrySet()) {
+            System.out.println(medidor.getValue());
+        }
+    }
+
+    public static void addZones(HashMap<String, Zona> mapaZonas, Scanner scanner){
         try {
             FileWriter myWriter = new FileWriter("Data/ZONES_DATA.csv", true);
             Zona novaZona = new Zona();
@@ -151,6 +212,17 @@ public class Menu {
         };
 
         return String.join("\t",fields);
+    }
+
+
+    //Meters | Medidores
+
+    private static void listMeters(HashMap<String, Zona> mapaZonas) {
+        System.out.println("ID\tNAME\tZONE\tPOPULATION");
+        for (HashMap.Entry<String, Zona> zona :
+                mapaZonas.entrySet()) {
+            System.out.println(zona.getValue());
+        }
     }
 
 

@@ -5,13 +5,13 @@ public class Zona {
 
     private static int curId = 0;
 
-    private int id;
-    private int populacao;
-    private double totalCond;
-    private String nome;
-    private String codGeo;
-    private Medidor medidorSaida;
-    private Medidor medidorZona;
+    int id;
+    int populacao;
+    double totalCond;
+    String nome;
+    String codGeo;
+    Medidor medidorSaida;
+    Medidor medidorZona;
 
     public Zona() {
         id = curId++;
@@ -67,7 +67,7 @@ public class Zona {
 
     @Override
     public String toString() {
-        return getId() + "\t" + getCodGeo() + "\t" + getNome() + "\t" + getPopulacao();
+        return getId() + "\t" + getCodGeo() + "\t" + getNome() + "\t"+ getTotalCond() +"\t" + getPopulacao();
     }
 
     private int getId() {
