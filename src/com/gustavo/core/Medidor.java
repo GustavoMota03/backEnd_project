@@ -80,7 +80,7 @@ public class Medidor {
 
     @Override
     public String toString() {
-        return getCodMedidor() + "\t" + getNomeMedidor() + "\t" + getZona() + "\t"+ getCodUni() +"\t" + getTipoMedidor() + "\n";
+        return getCodMedidor() + "\t" + getNomeMedidor() + "\t" + getZona().getCodGeo() + "\t"+ getCodUni() +"\t" + getTipoMedidor() + "\n";
     }
 
     HashMap<String, Zona> mapaZonas = new HashMap<>();
@@ -99,15 +99,20 @@ public class Medidor {
         }
 
 
-        novoMedidor.zona = mapaZonas.get(split[TSV_COLUMN_ZONE]);
+        Zona zona = mapaZonas.get(split[TSV_COLUMN_ZONE]);
+        novoMedidor.zona = zona;
+        if(zona.tmpZona.equals(split[0])){
+            zona.medidorZona = novoMedidor;
+        }
+
         if (novoMedidor.zona == null){
             throw new Exception("Zona "+ split[TSV_COLUMN_ZONE] +" não encontrada!");
         }
         novoMedidor.setCodMedidor(split[0]);
         novoMedidor.setNomeMedidor(split[1]);
         //novoMedidor.setZona(split[2]);
-        novoMedidor.setCodUni(split[3]);
-        novoMedidor.tipo = TipoMedidor.parse(split[4]);
+        novoMedidor.setCodUni(split[4]);
+        novoMedidor.tipo = TipoMedidor.parse(split[5]);
 
 
         return novoMedidor;
