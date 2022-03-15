@@ -25,6 +25,8 @@ public class Medidor {
 
         ;
 
+
+
         String name;
 
         TipoMedidor(String text) {
@@ -40,6 +42,8 @@ public class Medidor {
             return null;
         }
     }
+
+    TipoMedidor arr[] = TipoMedidor.values();
 
 
     public String getNomeMedidor() {
@@ -78,14 +82,11 @@ public class Medidor {
         this.zona = zona;
     }
 
+
     @Override
     public String toString() {
         return getCodMedidor() + "\t" + getNomeMedidor() + "\t" + getZona().getCodGeo() + "\t"+ getCodUni() +"\t" + getTipoMedidor() + "\n";
     }
-
-    HashMap<String, Zona> mapaZonas = new HashMap<>();
-    HashMap<String, Medidor> mapaMedidor = new HashMap<>();
-
 
 
     public static Medidor parse(String input, HashMap<String, Zona> mapaZonas) throws Exception {
@@ -100,7 +101,7 @@ public class Medidor {
 
 
         Zona zona = mapaZonas.get(split[TSV_COLUMN_ZONE]);
-        novoMedidor.zona = zona;
+        novoMedidor.setZona(zona);
         if(zona.tmpZona.equals(split[0])){
             zona.medidorZona = novoMedidor;
         }

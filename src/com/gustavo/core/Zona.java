@@ -11,6 +11,16 @@ public class Zona {
     Medidor medidorZona;
     String tmpZona;
 
+
+    public String getTmpZona() {
+        return tmpZona;
+    }
+
+    public void setTmpZona(String tmpZona) {
+        this.tmpZona = tmpZona;
+    }
+
+
     public int getPopulacao() {
         return populacao;
     }
@@ -58,6 +68,8 @@ public class Zona {
     public void setMedidorZona(Medidor medidorZona) {
         this.medidorZona = medidorZona;
     }
+
+
 
     @Override
     public String toString() {

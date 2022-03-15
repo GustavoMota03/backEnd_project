@@ -52,7 +52,7 @@ public class Menu {
                 novaZona.setNome(split[0]);
                 novaZona.setCodGeo(split[1]);
                 novaZona.tmpZona = split[2];
-                novaZona.setTotalCond(Double.parseDouble(split[3]));
+                novaZona.setTotalCond(Double.parseDouble((split[3])));
                 novaZona.setPopulacao(((int)Double.parseDouble(split[4])));
 
                 mapaZonas.put(novaZona.getCodGeo(), novaZona);
@@ -117,11 +117,13 @@ public class Menu {
             System.out.println("1 - Listar as Zonas");
             System.out.println("2 - Listar Medidores");
             System.out.println("3 - Adicionar Zonas");
-            System.out.println("4 - Verificar Zona");
-            System.out.println("5 - Verificar Medidor");
+            System.out.println("4 - Adicionar Medidores");
+            System.out.println("5 - Verificar Zona");
+            System.out.println("6 - Verificar Medidor");
             System.out.println("0 - Fechar");
 
             choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -134,9 +136,12 @@ public class Menu {
                     addZones(mapaZonas, scanner);
                     break;
                 case 4:
+                    addMeters(mapaMedidor,mapaZonas, scanner);
+                    break;
+                case 5:
                     viewZones(mapaZonas);
                     break;
-                case 5: viewMeters(mapaMedidor);
+                case 6: viewMeters(mapaMedidor);
                     break;
 
                 case 0:
@@ -168,25 +173,74 @@ public class Menu {
     }
 
     //Adicionar
-    public static void addZones(HashMap<String, Zona> mapaZonas, Scanner scanner){
+    public static void addMeters(HashMap<String, Medidor> mapaMedidor, HashMap<String, Zona> mapaZonas,Scanner scanner){
         try {
-            FileWriter myWriter = new FileWriter("Data/ZONES_DATA.csv", true);
+            FileWriter myWriter = new FileWriter("Data/METERS_DATA.tsv", true);
+            Medidor novoMedidor = new Medidor();
+
+
+            System.out.print("ID: ");
+            String arg = scanner.nextLine();
+            novoMedidor.setCodMedidor(arg);
+
+            System.out.print("\nName: ");
+            arg = scanner.nextLine();
+            novoMedidor.setNomeMedidor(arg);
+
+            System.out.print("\nZone: ");
+            arg = scanner.nextLine();
+            Zona zona = mapaZonas.get(arg);
+            novoMedidor.setZona(zona);
+
+            if (novoMedidor.zona == null){
+                System.out.println("Zona inexistente");
+                return;
+            }
+
+            System.out.println("\n Available types: \n1 - Flow\n2 - Pressure\n3 - Level\n4 - Rainfall\n5 - Temperature");
+            System.out.print("\nType: ");
+            //arg = scanner.next();
+
+            int typeArg = scanner.nextInt();
+            novoMedidor.tipo = Medidor.TipoMedidor.values()[typeArg - 1];
+
+
+            myWriter.write("\n");
+
+            myWriter.write(serializeMeter(novoMedidor));
+            myWriter.flush();
+
+            System.out.println(serializeMeter(novoMedidor));
+
+            mapaMedidor.put(novoMedidor.getCodMedidor(), novoMedidor);
+
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+
+    }public static void addZones(HashMap<String, Zona> mapaZonas, Scanner scanner){
+        try {
+            FileWriter myWriter = new FileWriter("Data/ZONES_DATA.tsv", true);
             Zona novaZona = new Zona();
 
             System.out.print("Code: ");
-            String arg = scanner.next();
+            String arg = scanner.nextLine();
             novaZona.setCodGeo(arg);
 
             System.out.print("\nName: ");
-            arg = scanner.next();
+            arg = scanner.nextLine();
             novaZona.setNome(arg);
 
             System.out.print("\nPopulation: ");
-            arg = scanner.next();
+            arg = scanner.nextLine();
             novaZona.setPopulacao(Integer.parseInt(arg));
 
             System.out.print("\nPipes Lenght: ");
-            arg = scanner.next();
+            arg = scanner.nextLine();
             novaZona.setTotalCond(Double.parseDouble(arg));
 
 
@@ -215,6 +269,18 @@ public class Menu {
                 zona.tmpZona,
                 String.valueOf(zona.getTotalCond()),
                 String.valueOf(zona.getPopulacao()),
+        };
+
+        return String.join("\t",fields);
+    }
+    private static String serializeMeter(Medidor medidor){
+        String[] fields = new String[]{
+                medidor.getCodMedidor(),
+                medidor.getNomeMedidor(),
+                String.valueOf(medidor.getZona().getCodGeo()),
+                null,
+                medidor.getCodUni(),
+                String.valueOf(medidor.getTipoMedidor()),
         };
 
         return String.join("\t",fields);
