@@ -1,10 +1,11 @@
 package com.gustavo.core;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -120,6 +121,7 @@ public class Menu {
             System.out.println("4 - Adicionar Medidores");
             System.out.println("5 - Verificar Zona");
             System.out.println("6 - Verificar Medidor");
+            System.out.println("7 - Eliminar Zona");
             System.out.println("0 - Fechar");
 
             choice = scanner.nextInt();
@@ -141,10 +143,15 @@ public class Menu {
                 case 5:
                     viewZones(mapaZonas);
                     break;
-                case 6: viewMeters(mapaMedidor);
+                case 6:
+                    viewMeters(mapaMedidor);
+                    break;
+                case 7:
+                    delZones(mapaZonas,mapaMedidor);
                     break;
 
                 case 0:
+
                     System.out.println("\nDebug Encerrado!\n");
                     return;
                 default:
@@ -158,7 +165,7 @@ public class Menu {
     //Listar
 
     private static void listZones(HashMap<String, Zona> mapaZonas) {
-        System.out.println("PK\tGIS\tNAME\tPOPULATION");
+        System.out.println("NAME\tID\tZONE METER\tLENGTH\tPOPULATION");
         for (HashMap.Entry<String, Zona> zona : mapaZonas.entrySet()) {
             System.out.println(zona.getValue());
         }
@@ -328,6 +335,65 @@ public class Menu {
     }
 
 
+    public static void tempFile(){
+        try {
+
+            // Create an temporary file in a specified directory.
+            Path temp = Files.createTempFile( "Zonas", ".tsv");
+
+            System.out.println("Temp file : " + temp);
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void delZones(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor){
+        Scanner myScanner = new Scanner(System.in);
+        //System.out.println("Initial Mappings are: " + mapaZonas);
+
+        System.out.println("Digite o NOME da zona que deseja eliminar: ");
+        String arg = myScanner.nextLine();
+
+        mapaZonas.remove(arg);
+
+         File zonas =null;
+
+        try {
+            zonas = File.createTempFile("Zonas", ".tsv");
+
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(zonas))){
+                bw.write(String.join("\t",Zona.HEADERS));
+              for (Map.Entry<String, Zona> entry : mapaZonas.entrySet()) {
+                // put key and value separated by a colon
+                bw.write(entry.getValue().toString());
+                  System.out.println(entry.getKey() + "\n" + entry.getValue());
+                  // new line
+                  bw.newLine();
+
+            }
+            File dst = new File("Data/ZONES_DATA.tsv");
+            dst.delete();
+            zonas.renameTo(dst);
+        }catch (IOException e){
+            try {
+                if (zonas != null && zonas.exists())
+                    zonas.delete();
+            }catch (Exception ee){
+
+            }
+        }
+
+        //loadData(mapaZonas,mapaMedidor);
+    } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
 
 

@@ -3,6 +3,9 @@ package com.gustavo.core;
 
 public class Zona {
 
+    public static String[] HEADERS = new String[]{"NAME", "ID", "ZONE", "METER", "LENGTH", "POPULATION\n"};
+
+
     int populacao;
     double totalCond;
     String nome;
@@ -73,7 +76,7 @@ public class Zona {
 
     @Override
     public String toString() {
-        return getCodGeo() + "\t" + getNome() + "\t"+ getTotalCond() +"\t" + getPopulacao();
+        return getNome() + "\t" + getCodGeo() + "\t"+ tmpZona +"\t" + getTotalCond() + "\t" + getPopulacao();
     }
 
 }
