@@ -3,11 +3,15 @@ package com.gustavo.core;
 import java.util.HashMap;
 
 public class Medidor {
+
+    public static String[] HEADERS = new String[]{"ID", "NAME", "ZONE", "Supplied by", "Units", "Type\n"};
+
     private static int TSV_COLUMN_ZONE = 2;
 
     String nomeMedidor;
     String codMedidor;
     String codUni;
+    String suppliedBy;
     Zona zona;
     TipoMedidor tipo;
     int id;
@@ -22,7 +26,6 @@ public class Medidor {
         Level("Level"),
         Rainfall("Rainfall"),
         Temperature("Temperature"),
-
         ;
 
 
@@ -43,7 +46,6 @@ public class Medidor {
         }
     }
 
-    TipoMedidor arr[] = TipoMedidor.values();
 
 
     public String getNomeMedidor() {
@@ -55,7 +57,7 @@ public class Medidor {
     }
 
     public String getCodMedidor() {
-        return codMedidor;
+        return codMedidor ;
     }
 
     public void setCodMedidor(String codMedidor) {
@@ -82,10 +84,13 @@ public class Medidor {
         this.zona = zona;
     }
 
+    public String getSuppliedBy() { return suppliedBy; }
+
+    public void setSuppliedBy(String suppliedBy) { this.suppliedBy = suppliedBy; }
 
     @Override
     public String toString() {
-        return getCodMedidor() + "\t" + getNomeMedidor() + "\t" + getZona().getCodGeo() + "\t"+ getCodUni() +"\t" + getTipoMedidor() + "\n";
+        return getCodMedidor() + "\t" + getNomeMedidor() + "\t" + zona.getCodGeo() + "\t" + getSuppliedBy() + "\t" + getCodUni() +"\t" + getTipoMedidor();
     }
 
 
@@ -97,21 +102,30 @@ public class Medidor {
         //Limpar Args
         for (int i = 0; i < split.length; i++) {
             split[i] = split[i].trim();
+            if (split[3] == (null)){
+                return null;
+            }
+            if(split[2].equals("System")){
+                return null;
+            }
         }
 
 
         Zona zona = mapaZonas.get(split[TSV_COLUMN_ZONE]);
-        novoMedidor.setZona(zona);
-        if(zona.tmpZona.equals(split[0])){
-            zona.medidorZona = novoMedidor;
+        if (zona != null) {
+            novoMedidor.setZona(zona);
+            if (zona.tmpZona.equals(split[0])) {
+                zona.medidorZona = novoMedidor;
+            }
         }
 
         if (novoMedidor.zona == null){
-            throw new Exception("Zona "+ split[TSV_COLUMN_ZONE] +" não encontrada!");
+            //throw new Exception("Zona "+ split[TSV_COLUMN_ZONE] +" não encontrada!");
         }
         novoMedidor.setCodMedidor(split[0]);
         novoMedidor.setNomeMedidor(split[1]);
-        //novoMedidor.setZona(split[2]);
+        novoMedidor.setZona(zona);
+        novoMedidor.setSuppliedBy(split[3]);
         novoMedidor.setCodUni(split[4]);
         novoMedidor.tipo = TipoMedidor.parse(split[5]);
 
