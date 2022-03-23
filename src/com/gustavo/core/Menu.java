@@ -4,39 +4,36 @@ package com.gustavo.core;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.sql.SQLOutput;
 import java.util.*;
 
 
 public class Menu {
-    public static void processarMenu(String[] args) {
+    public static final String DATA_METERS_DATA_TSV = "Data/METERS_DATA.tsv";
+    public static final String DATA_ZONES_DATA_CSV = "Data/ZONES_DATA.csv";
+    HashMap<String, Zona> mapaZonas = new HashMap<>();
+    HashMap<String, Medidor> mapaMedidor = new HashMap<>();
+
+    public void processarMenu() {
 
 
-        HashMap<String, Zona> mapaZonas = new HashMap<>();
-        HashMap<String, Medidor> mapaMedidor = new HashMap<>();
-
-        loadData(mapaZonas, mapaMedidor);
-
-        Menu.main(mapaZonas, mapaMedidor);
-
-
+        loadData();
+        main();
     }
 
-    private static void loadData(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor) {
+    public void loadData() {
         //Zones | Zonas
 
 
-        try {
-            File myObj = new File("Data/ZONES_DATA.csv");
-            Scanner myReader = new Scanner(myObj);
+        File myObj;
+        myObj = new File(DATA_ZONES_DATA_CSV);
 
-            boolean pastHeader = false;
+        boolean pastHeader = false;
 
-
+        try(Scanner myReader = new Scanner(myObj)) {
             while (myReader.hasNextLine()) {
                 //Ler Args
                 String data = myReader.nextLine();
-                if (!pastHeader){
+                if (!pastHeader) {
                     pastHeader = true;
                     continue;
                 }
@@ -53,7 +50,7 @@ public class Menu {
                 novaZona.setCodGeo(split[1]);
                 novaZona.tmpZona = split[2];
                 novaZona.setTotalCond(Double.parseDouble((split[3])));
-                novaZona.setPopulacao(((int)Double.parseDouble(split[4])));
+                novaZona.setPopulacao(((int) Double.parseDouble(split[4])));
 
                 mapaZonas.put(novaZona.getCodGeo(), novaZona);
 
@@ -63,117 +60,122 @@ public class Menu {
                 //}
 
             }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error ocurred.");
-            e.printStackTrace();
-        }
+            //myReader.close();
 
-        //Meters | Medidores
+            //Meters | Medidores
 
-        try {
-            File myObj = new File("Data/METERS_DATA.tsv");
-            Scanner myReader = new Scanner(myObj);
+                myObj = new File(DATA_METERS_DATA_TSV);
+            Scanner myreader = new Scanner(myObj);
 
-            boolean pastHeader = false;
+            pastHeader = false;
 
-            while (myReader.hasNextLine()) {
-                //Ler Args
-                String input = myReader.nextLine();
+                while (myreader.hasNextLine()) {
+                    //Ler Args
+                    String input = myreader.nextLine();
 
-                if (!pastHeader){
-                    pastHeader = true;
-                    continue;
+                    if (!pastHeader) {
+                        pastHeader = true;
+                        continue;
+                    }
+
+
+                    //input = myReader.nextLine();
+                    try {
+                        Medidor novoMedidor = Medidor.parse(input, mapaZonas);
+
+                        if (novoMedidor != null) {
+                            mapaMedidor.put(novoMedidor.getCodMedidor(), novoMedidor);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //for(int i=0; i<split.length; i++)
+                    //System.out.println(novaZona);
+                    //}
+
                 }
-
-
-                //input = myReader.nextLine();
-                try {
-                    Medidor novoMedidor = Medidor.parse(input, mapaZonas);
-
-                    if(novoMedidor != null){ mapaMedidor.put(novoMedidor.getCodMedidor(), novoMedidor);}
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                //for(int i=0; i<split.length; i++)
-                //System.out.println(novaZona);
-                //}
-
+            myreader.close();
+            } catch (Exception e) {
+                System.out.println("An error ocurred.");
+                e.printStackTrace();
             }
-            myReader.close();
-        } catch (Exception e) {
-            System.out.println("An error ocurred.");
-            e.printStackTrace();
-        }
-
 
 
     }
 
-    private static void main(HashMap<String, Zona> mapaZonas, HashMap<String, Medidor> mapaMedidor) {
+    private void main() {
         int choice = 1;
 
-        Scanner scanner = new Scanner(System.in);
-        loadData(mapaZonas, mapaMedidor);
+        try(Scanner scanner = new Scanner(System.in)) {
+            loadData();
 
-        while(choice != 0) {
-            System.out.println("--------Menu--------");
-            System.out.println("1 - Listar as Zonas");
-            System.out.println("2 - Listar Medidores");
-            System.out.println("3 - Adicionar Zonas");
-            System.out.println("4 - Adicionar Medidores");
-            System.out.println("5 - Verificar Zona");
-            System.out.println("6 - Verificar Medidor");
-            System.out.println("7 - Eliminar Zona");
-            System.out.println("8 - Eliminar Medidor");
-            System.out.println("9 - Editar Zona");
-            System.out.println("10 - Editar Medidor");
-            System.out.println("0 - Fechar");
+            while (choice != 0) {
+                System.out.println("--------Menu--------");
+                System.out.println("1 - Listar as Zonas");
+                System.out.println("2 - Listar Medidores");
+                System.out.println("3 - Adicionar Zonas");
+                System.out.println("4 - Adicionar Medidores");
+                System.out.println("5 - Verificar Zona");
+                System.out.println("6 - Verificar Medidor");
+                System.out.println("7 - Eliminar Zona");
+                System.out.println("8 - Eliminar Medidor");
+                System.out.println("9 - Editar Zona");
+                System.out.println("10 - Editar Medidor");
+                System.out.println("0 - Fechar");
 
-            choice = scanner.nextInt();
-            scanner.nextLine();
+                choice = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (choice) {
-                case 1:
-                    listZones(mapaZonas);
-                    break;
-                case 2:
-                    listMedidor(mapaMedidor);
-                    break;
-                case 3:
-                    addZones(mapaZonas, scanner);
-                    break;
-                case 4:
-                    addMeters(mapaMedidor,mapaZonas, scanner);
-                    break;
-                case 5:
-                    viewZones(mapaZonas);
-                    break;
-                case 6:
-                    viewMeters(mapaMedidor);
-                    break;
-                case 7:
-                    delZones(mapaZonas,mapaMedidor);
-                    break;
-                case 8:
-                    delMeters(mapaZonas,mapaMedidor);
-                    break;
-                case 9:
-                    updateZone(mapaZonas,mapaMedidor);
-                    break;
-                case 10:
-                    updateMeter(mapaZonas,mapaMedidor);
-                    break;
+                switch (choice) {
+                    case 1:
+                        listZones();
+                        break;
+                    case 2:
+                        listMedidor();
+                        break;
+                    case 3:
+                        addZones(scanner);
+                        break;
+                    case 4:
+                        addMeters(scanner);
+                        break;
+                    case 5:
+                        viewZones();
+                        break;
+                    case 6:
+                        viewMeters();
+                        break;
+                    case 7:
+                        delZones();
+                        break;
+                    case 8:
+                        delMeters();
+                        break;
+                    case 9:
+                        updateZone();
+                        break;
+                    case 10:
+                        updateMeter();
+                        break;
+                    case 11:
+                        for(int i=0;i<= mapaMedidor.size();i++){
+                            if (mapaMedidor.containsValue("S15")){
+                                System.out.println(mapaMedidor);
+                            }
+                        }
+                        break;
 
-                case 0:
+                    case 0:
 
-                    System.out.println("\nDebug Encerrado!\n");
-                    saveMeters(mapaMedidor);
-                    saveZonas(mapaZonas);
-                    return;
-                default:
-                    System.out.println("Escolha uma das opções disponiveis!");;
+                        System.out.println("\nDebug Encerrado!\n");
+                        saveMeters();
+                        saveZonas();
+                        return;
+                    default:
+                        System.out.println("Escolha uma das opções disponiveis!");
+                        ;
+                }
             }
         }
 
@@ -182,14 +184,14 @@ public class Menu {
 
     //Listar
 
-    private static void listZones(HashMap<String, Zona> mapaZonas) {
+    private void listZones() {
         System.out.println("NAME\tID\tZONE METER\tLENGTH\tPOPULATION");
         for (HashMap.Entry<String, Zona> zona : mapaZonas.entrySet()) {
             System.out.println(zona.getValue());
         }
     }
 
-    private static void listMedidor(HashMap<String, Medidor> mapaMedidor) {
+    private void listMedidor() {
         System.out.println("ID\tNAME\tZONE\tSupplied by\tUNITS\tTYPE");
         for (HashMap.Entry<String, Medidor> medidor :
                 mapaMedidor.entrySet()) {
@@ -198,136 +200,92 @@ public class Menu {
     }
 
     //Adicionar
-    public static void addMeters(HashMap<String, Medidor> mapaMedidor, HashMap<String, Zona> mapaZonas,Scanner scanner){
-        try {
-            FileWriter myWriter = new FileWriter("Data/METERS_DATA.tsv", true);
-            Medidor novoMedidor = new Medidor();
+    public void addMeters(Scanner scanner) {
+        Medidor novoMedidor = new Medidor();
 
 
-            System.out.print("ID: ");
-            String arg = scanner.nextLine();
-            novoMedidor.setCodMedidor(arg);
+        System.out.print("ID: ");
+        String arg = scanner.nextLine();
+        novoMedidor.setCodMedidor(arg);
 
-            System.out.print("\nName: ");
-            arg = scanner.nextLine();
-            novoMedidor.setNomeMedidor(arg);
+        System.out.print("\nName: ");
+        arg = scanner.nextLine();
+        novoMedidor.setNomeMedidor(arg);
 
-            System.out.print("\nZone: ");
-            arg = scanner.nextLine();
-            Zona zona = mapaZonas.get(arg);
-            novoMedidor.setZona(zona);
+        System.out.print("\nZone: ");
+        arg = scanner.nextLine();
+        Zona zona = mapaZonas.get(arg);
+        novoMedidor.setZona(zona);
 
-            if (novoMedidor.zona == null){
-                System.out.println("Zona inexistente");
-                return;
+
+        if (novoMedidor.zona == null) {
+            System.out.println("Zona inexistente");
+            return;
+        }
+
+        System.out.print("\nSupplied by: ");
+        arg = scanner.nextLine();
+        novoMedidor.setSuppliedBy(arg);
+
+        System.out.println("\n Available types: \n1 - Flow\n2 - Pressure\n3 - Level\n4 - Rainfall\n5 - Temperature");
+        System.out.print("\nType: ");
+        //arg = scanner.next();
+
+        int typeArg = scanner.nextInt();
+        novoMedidor.tipo = Medidor.TipoMedidor.values()[typeArg - 1];
+
+        mapaMedidor.put(novoMedidor.getCodMedidor(), novoMedidor);
+
+        if(novoMedidor.getZona().getCodGeo().equals(zona.getCodGeo())){
+            if (zona.getMedidorZona() == null){
+                zona.setMedidorZona(novoMedidor);
             }
-
-            System.out.print("\nSupplied by: ");
-            arg = scanner.nextLine();
-            novoMedidor.setSuppliedBy(arg);
-
-            System.out.println("\n Available types: \n1 - Flow\n2 - Pressure\n3 - Level\n4 - Rainfall\n5 - Temperature");
-            System.out.print("\nType: ");
-            //arg = scanner.next();
-
-            int typeArg = scanner.nextInt();
-            novoMedidor.tipo = Medidor.TipoMedidor.values()[typeArg - 1];
-
-
-            myWriter.write("\n");
-
-            myWriter.write(serializeMeter(novoMedidor));
-            myWriter.flush();
-
-            System.out.println(serializeMeter(novoMedidor));
-
-            mapaMedidor.put(novoMedidor.getCodMedidor(), novoMedidor);
-
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
         }
 
 
-    }public static void addZones(HashMap<String, Zona> mapaZonas, Scanner scanner){
-        try {
-            FileWriter myWriter = new FileWriter("Data/ZONES_DATA.csv", true);
-            Zona novaZona = new Zona();
+        saveMeters();
 
-            System.out.print("Code: ");
-            String arg = scanner.nextLine();
-            novaZona.setCodGeo(arg);
-
-            System.out.print("\nName: ");
-            arg = scanner.nextLine();
-            novaZona.setNome(arg);
-
-            System.out.print("\nPopulation: ");
-            arg = scanner.nextLine();
-            novaZona.setPopulacao(Integer.parseInt(arg));
-
-            System.out.print("\nPipes Lenght: ");
-            arg = scanner.nextLine();
-            novaZona.setTotalCond(Double.parseDouble(arg));
-
-
-            myWriter.write("\n");
-
-            myWriter.write(serializeZone(novaZona));
-            myWriter.flush();
-
-            System.out.println(serializeZone(novaZona));
-
-            mapaZonas.put(novaZona.getCodGeo(), novaZona);
-
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
 
     }
 
-    private static String serializeZone(Zona zona){
-        String[] fields = new String[]{
-                zona.getNome(),
-                zona.getCodGeo(),
-                zona.tmpZona,
-                String.valueOf(zona.getTotalCond()),
-                String.valueOf(zona.getPopulacao()),
-        };
+    public void addZones(Scanner scanner) {
+        //FileWriter myWriter = new FileWriter(DATA_ZONES_DATA_CSV, true);
+        Zona novaZona = new Zona();
 
-        return String.join("\t",fields);
+        System.out.print("Code: ");
+        String arg = scanner.nextLine();
+        novaZona.setCodGeo(arg);
+
+        System.out.print("\nName: ");
+        arg = scanner.nextLine();
+        novaZona.setNome(arg);
+
+        System.out.print("\nPopulation: ");
+        arg = scanner.nextLine();
+        novaZona.setPopulacao(Double.parseDouble(arg));
+
+        System.out.print("\nPipes Lenght: ");
+        arg = scanner.nextLine();
+        novaZona.setTotalCond(Double.parseDouble(arg));
+
+        mapaZonas.put(novaZona.getCodGeo(), novaZona);
+
+        saveZonas();
+
     }
-    private static String serializeMeter(Medidor medidor){
-        String[] fields = new String[]{
-                medidor.getCodMedidor(),
-                medidor.getNomeMedidor(),
-                String.valueOf(medidor.getZona().getCodGeo()),
-                medidor.getSuppliedBy(),
-                medidor.getCodUni(),
-                String.valueOf(medidor.getTipoMedidor()),
-        };
-
-        return String.join("\t",fields);
-    }
-
 
     //
 
-    private static void viewZones(HashMap<String, Zona> mapaZonas) {
+    public void viewZones() {
         Scanner myScanner = new Scanner(System.in);
 
         System.out.println("Qual é a zona que deseja ver: ");
         String tmpGeo = myScanner.next();
 
-        for(HashMap.Entry<String, Zona> pair : mapaZonas.entrySet()){
-           Zona zona = pair.getValue();
+        for (HashMap.Entry<String, Zona> pair : mapaZonas.entrySet()) {
+            Zona zona = pair.getValue();
 
-           if(tmpGeo.equals(zona.getCodGeo())){
+            if (tmpGeo.equals(zona.getCodGeo())) {
                 System.out.println(zona);
                 return;
             }
@@ -337,16 +295,16 @@ public class Menu {
 
     }
 
-    private static void viewMeters(HashMap<String, Medidor> mapaMedidor) {
+    private void viewMeters() {
         Scanner myScanner = new Scanner(System.in);
 
         System.out.println("Qual é o medidor que deseja ver: ");
         String tmpCod = myScanner.next();
 
-        for(HashMap.Entry<String, Medidor> pair : mapaMedidor.entrySet()){
+        for (HashMap.Entry<String, Medidor> pair : mapaMedidor.entrySet()) {
             Medidor medidor = pair.getValue();
 
-            if(tmpCod.equals(medidor.getCodMedidor())){
+            if (tmpCod.equals(medidor.getCodMedidor())) {
                 System.out.println(medidor);
                 return;
             }
@@ -356,7 +314,7 @@ public class Menu {
 
     }
 
-    private static void delZones(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor) {
+    private void delZones() {
         Scanner myScanner = new Scanner(System.in);
         //System.out.println("Initial Mappings are: " + mapaZonas);
 
@@ -364,23 +322,23 @@ public class Menu {
         String arg = myScanner.nextLine();
         Set<String> IDs = new HashSet<>(mapaMedidor.keySet());
 
-        for(String x : IDs){
+        for (String x : IDs) {
 
             boolean blnExists = mapaMedidor.get(x).getZona().getCodGeo().equals(arg);
             if (blnExists) {
                 //System.out.println(arg + " exists in HashMap ? : " + blnExists);
                 mapaMedidor.remove(x);
-                saveMeters(mapaMedidor);
+                saveMeters();
             }
         }
 
 
         mapaZonas.remove(arg);
 
-        saveZonas(mapaZonas);
+        saveZonas();
     }
 
-    private static void saveZonas(HashMap<String, Zona> mapaZonas) {
+    private void saveZonas() {
         File zonas = null;
 
         try {
@@ -391,12 +349,12 @@ public class Menu {
                 for (Map.Entry<String, Zona> entry : mapaZonas.entrySet()) {
                     // put key and value separated by a colon
                     bw.write(entry.getValue().toString());
-                   // System.out.println(entry.getKey() + "\n" + entry.getValue());
+                    // System.out.println(entry.getKey() + "\n" + entry.getValue());
                     // new line
                     bw.newLine();
 
                 }
-                File dst = new File("Data/ZONES_DATA.csv");
+                File dst = new File(DATA_ZONES_DATA_CSV);
                 dst.delete();
                 zonas.renameTo(dst);
             } catch (IOException e) {
@@ -414,25 +372,32 @@ public class Menu {
         }
     }
 
-    private static void delMeters(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor){
+    private void delMeters() {
         Scanner myScanner = new Scanner(System.in);
         System.out.println("Initial Mappings are: " + mapaMedidor);
 
         System.out.println("Digite o ID do MEDIDOR que deseja eliminar: ");
         String arg = myScanner.nextLine();
 
-        if(!mapaMedidor.containsKey(arg)){
-            System.out.println("Medidor não encontrado.");
-        }
-        else {
+        if (!mapaMedidor.containsKey(arg)) {
+            System.err.println("Medidor não encontrado.");
+        } else {
+
+            Medidor medidor = mapaMedidor.get(arg);
+            if (medidor.getZona().getMedidorZona().equals(medidor)){
+                medidor.getZona().setMedidorZona(null);
+            }
 
             mapaMedidor.remove(arg);
 
-            saveMeters(mapaMedidor);
+
+
+            saveMeters();
+            saveZonas();
         }
     }
 
-    private static void saveMeters(HashMap<String, Medidor> mapaMedidor) {
+    private void saveMeters() {
         File medidores = null;
 
         try {
@@ -443,7 +408,7 @@ public class Menu {
                 for (Map.Entry<String, Medidor> entry : mapaMedidor.entrySet()) {
                     // put key and value separated by a colon
                     bw.write(entry.getValue().toString());
-                   // System.out.println(entry.getKey() + "\t" + entry.getValue());
+                    // System.out.println(entry.getKey() + "\t" + entry.getValue());
                     // new line
                     bw.newLine();
                 }
@@ -455,7 +420,7 @@ public class Menu {
 
                 }
             } finally {
-                File dst = new File("Data/METERS_DATA.tsv");
+                File dst = new File(DATA_METERS_DATA_TSV);
                 //dst.delete();
                 //medidores.renameTo(dst);
                 Files.move(medidores.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -468,7 +433,7 @@ public class Menu {
         }
     }
 
-    private static void updateZone(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor){
+    private void updateZone() {
 
         Scanner myScanner = new Scanner(System.in);
 
@@ -487,7 +452,9 @@ public class Menu {
                     System.out.println("Introduza a alteração: ");
                     String argNovoCamp = myScanner.next();
 
+                    Medidor m = mapaMedidor.get(arg);
                     Zona z = mapaZonas.get(arg);
+
                     switch (argCamp) {
                         case 1:
                             System.out.println("Campo com nome " + z.getNome() + " alterado para " + argNovoCamp);
@@ -495,6 +462,13 @@ public class Menu {
                             break;
 
                         case 2:
+
+                            if(m.getZona().getCodGeo().equals(z.getCodGeo())){
+                                if (m.getCodMedidor().equals(argNovoCamp)){
+                                    z.setMedidorZona(m);
+                                }
+                            }
+
                             System.out.println("Campo com nome " + z.tmpZona + " alterado para " + argNovoCamp);
                             z.tmpZona = argNovoCamp;
                             break;
@@ -506,10 +480,10 @@ public class Menu {
 
                         case 4:
                             System.out.println("Campo com nome " + z.getPopulacao() + " alterado para " + argNovoCamp);
-                            z.setPopulacao(Integer.parseInt(argNovoCamp));
+                            z.setPopulacao(Double.parseDouble(argNovoCamp));
                             break;
                     }
-                    saveZonas(mapaZonas);
+                    saveZonas();
                     same = false;
                 } else {
                     System.out.println("ID de zona inexistente.\nIntroduza Novamente:");
@@ -518,11 +492,11 @@ public class Menu {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }while (same);
+        } while (same);
 
     }
 
-    private static void updateMeter(HashMap<String, Zona> mapaZonas,HashMap<String, Medidor> mapaMedidor){
+    private void updateMeter() {
 
         Scanner myScanner = new Scanner(System.in);
 
@@ -539,7 +513,7 @@ public class Menu {
                     int argCamp = myScanner.nextInt();
                     String argNovoCamp = null;
 
-                    if(argCamp != 5 ) {
+                    if (argCamp != 5) {
                         System.out.println("Introduza a alteração: ");
                         argNovoCamp = myScanner.next();
                     }
@@ -553,18 +527,18 @@ public class Menu {
                             break;
 
                         case 2:
-                                if (mapaZonas.containsKey(argNovoCamp)) {
-                                    System.out.println("Campo com nome " + m.getZona() + " alterado para " + argNovoCamp);
-                                    m.setZona(mapaZonas.get(argNovoCamp));
-                                } else {
-                                    System.out.println("Zona Inválida, introduza novamente!\n");
-                                    continue;
-                                }
+                            if (mapaZonas.containsKey(argNovoCamp)) {
+                                System.out.println("Campo com nome " + m.getZona() + " alterado para " + argNovoCamp);
+                                m.setZona(mapaZonas.get(argNovoCamp));
+                            } else {
+                                System.out.println("Zona Inválida, introduza novamente!\n");
+                                continue;
+                            }
                             break;
 
                         case 3:
-                                System.out.println("Campo com nome " + m.getSuppliedBy() + " alterado para " + argNovoCamp);
-                                m.setSuppliedBy(argNovoCamp);
+                            System.out.println("Campo com nome " + m.getSuppliedBy() + " alterado para " + argNovoCamp);
+                            m.setSuppliedBy(argNovoCamp);
                             break;
 
                         case 4:
@@ -580,10 +554,12 @@ public class Menu {
                             m.tipo = Medidor.TipoMedidor.values()[typeArg - 1];
                             break;
                     }
-                    
+
                     System.out.println("Alteração feita com sucesso!\n");
-                    saveMeters(mapaMedidor);
+                    saveMeters();
                     same = false;
+
+
                 } else {
                     System.out.println("ID de zona inexistente.\nIntroduza Novamente:");
                     //continue;
@@ -591,7 +567,7 @@ public class Menu {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }while (same);
+        } while (same);
 
     }
 

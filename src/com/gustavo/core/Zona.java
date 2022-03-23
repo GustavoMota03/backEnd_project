@@ -6,7 +6,7 @@ public class Zona {
     public static String[] HEADERS = new String[]{"NAME", "ID", "ZONE METER", "LENGTH", "POPULATION\n"};
 
 
-    int populacao;
+    double populacao;
     double totalCond;
     String nome;
     String codGeo;
@@ -15,20 +15,11 @@ public class Zona {
     String tmpZona;
 
 
-    public String getTmpZona() {
-        return tmpZona;
-    }
-
-    public void setTmpZona(String tmpZona) {
-        this.tmpZona = tmpZona;
-    }
-
-
-    public int getPopulacao() {
+    public double getPopulacao() {
         return populacao;
     }
 
-    public void setPopulacao(int populacao) {
+    public void setPopulacao(double populacao) {
         this.populacao = populacao;
     }
 
@@ -76,7 +67,19 @@ public class Zona {
 
     @Override
     public String toString() {
-        return getNome() + "\t" + getCodGeo() + "\t"+ tmpZona +"\t" + getTotalCond() + "\t" + getPopulacao();
-}
+            return getNome() + "\t" + getCodGeo() + "\t"+ (this.getMedidorZona()== null ? "null" : this.getMedidorZona().getCodMedidor()) +"\t" + getTotalCond() + "\t" + getPopulacao();
+        }
+
+    public String serializeZone() {
+        String[] fields = new String[]{
+                getNome(),
+                getCodGeo(),
+                tmpZona,
+                String.valueOf(getTotalCond()),
+                String.valueOf(getPopulacao()),
+        };
+
+        return String.join("\t", fields);
+    }
 
 }

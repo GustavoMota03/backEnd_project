@@ -6,7 +6,7 @@ public class Medidor {
 
     public static String[] HEADERS = new String[]{"ID", "NAME", "ZONE", "Supplied by", "Units", "Type\n"};
 
-    private static int TSV_COLUMN_ZONE = 2;
+    public static int TSV_COLUMN_ZONE = 2;
 
     String nomeMedidor;
     String codMedidor;
@@ -115,7 +115,7 @@ public class Medidor {
         if (zona != null) {
             novoMedidor.setZona(zona);
             if (zona.tmpZona.equals(split[0])) {
-                zona.medidorZona = novoMedidor;
+                zona.setMedidorZona(novoMedidor);
             }
         }
 
@@ -131,5 +131,18 @@ public class Medidor {
 
 
         return novoMedidor;
+    }
+
+    public String serializeMeter() {
+        String[] fields = new String[]{
+                getCodMedidor(),
+                getNomeMedidor(),
+                String.valueOf(getZona().getCodGeo()),
+                getSuppliedBy(),
+                getCodUni(),
+                String.valueOf(getTipoMedidor()),
+        };
+
+        return String.join("\t", fields);
     }
 }
