@@ -236,11 +236,11 @@ public class Menu {
 
         mapaMedidor.put(novoMedidor.getCodMedidor(), novoMedidor);
 
-        if(novoMedidor.getZona().getCodGeo().equals(zona.getCodGeo())){
+        /*if(novoMedidor.getZona().getCodGeo().equals(zona.getCodGeo())){
             if (zona.getMedidorZona() == null){
                 zona.setMedidorZona(novoMedidor);
             }
-        }
+        }*/
 
 
         saveMeters();
@@ -452,7 +452,7 @@ public class Menu {
                     System.out.println("Introduza a alteração: ");
                     String argNovoCamp = myScanner.next();
 
-                    Medidor m = mapaMedidor.get(arg);
+                    Medidor m = mapaMedidor.get(argNovoCamp);
                     Zona z = mapaZonas.get(arg);
 
                     switch (argCamp) {
@@ -463,9 +463,10 @@ public class Menu {
 
                         case 2:
 
-                            if(m.getZona().getCodGeo().equals(z.getCodGeo())){
+                            if(z.getCodGeo().equals(m.getZona().getCodGeo())){
                                 if (m.getCodMedidor().equals(argNovoCamp)){
                                     z.setMedidorZona(m);
+                                    m.setZona(z);
                                 }
                             }
 
@@ -519,7 +520,7 @@ public class Menu {
                     }
 
                     Medidor m = mapaMedidor.get(arg);
-                    Zona z = mapaZonas.get(arg);
+
                     switch (argCamp) {
                         case 1:
                             System.out.println("Campo com nome " + m.getNomeMedidor() + " alterado para " + argNovoCamp);
@@ -529,7 +530,17 @@ public class Menu {
                         case 2:
                             if (mapaZonas.containsKey(argNovoCamp)) {
                                 System.out.println("Campo com nome " + m.getZona() + " alterado para " + argNovoCamp);
-                                m.setZona(mapaZonas.get(argNovoCamp));
+
+                                Zona zona = mapaZonas.get(argNovoCamp);
+                                Zona oldZ = m.getZona();
+                                m.setZona(zona);
+                                if (m.equals(oldZ.getMedidorZona())){
+                                    oldZ.setMedidorZona(null);
+                                }
+
+                                if (m.getZona().getMedidorZona() == null) {
+                                    m.getZona().setMedidorZona(m);
+                                }
                             } else {
                                 System.out.println("Zona Inválida, introduza novamente!\n");
                                 continue;
@@ -557,6 +568,7 @@ public class Menu {
 
                     System.out.println("Alteração feita com sucesso!\n");
                     saveMeters();
+                    saveZonas();
                     same = false;
 
 
