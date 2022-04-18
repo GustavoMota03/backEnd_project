@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/meters_zones_jar</output-path>
     <root id="archive" name="meters_zones.jar">
       <element id="module-output" name="meters_zones" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/postgresql-42.3.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

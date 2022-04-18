@@ -14,11 +14,6 @@ public class Medidor {
     String suppliedBy;
     Zona zona;
     TipoMedidor tipo;
-    int id;
-
-    private int getId() {
-        return id;
-    }
 
     public enum TipoMedidor{
         Flow("Flow"),

@@ -158,13 +158,6 @@ public class Menu {
                     case 10:
                         updateMeter();
                         break;
-                    case 11:
-                        for (int i = 0; i <= mapaMedidor.size(); i++) {
-                            if (mapaMedidor.containsValue("S15")) {
-                                System.out.println(mapaMedidor);
-                            }
-                        }
-                        break;
 
                     case 0:
 
