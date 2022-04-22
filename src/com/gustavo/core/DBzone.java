@@ -48,12 +48,12 @@ public class DBzone {
         System.out.println(conn.SHOW_ZONE_SQL);
 
 
-            System.out.println("Lista de Zonas:");
+        System.out.println("Lista de Zonas:");
 
-            System.out.println("\n Id\t     Codigo geografico\t Nome\t Medidor da Zona\t Comprimento Condutas\t População");
+        System.out.println("\n Id\t     Codigo geografico\t Nome\t Medidor da Zona\t Comprimento Condutas\t População");
 
-            int i = 0;
-        try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.SHOW_ZONE_SQL)){
+        int i = 0;
+        try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.SHOW_ZONE_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
@@ -67,7 +67,7 @@ public class DBzone {
                 i++;
 
             }
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             conn.getConnectX().rollback();
             // print SQL exception information
             printSQLException(ex);
@@ -80,22 +80,60 @@ public class DBzone {
         System.out.println("Insira a Primary key da zona que deseja dar delete: ");
         int id = scanner.nextInt();
 
+        try {
+            //verificação da primary key na base de dados
+            Statement stmt = conn.getConnectX().createStatement();
+
+            String SQL = "SELECT * FROM Zone WHERE id ='" + id + "'";
+
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            if (rs.next()) {
+                //Se a verificação for verdadeira, vai apagar a zona da base de dados juntamente coms os medidores da mesma
+                System.out.println("SUCESS");
 
 
-        try(PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.DELETE_ZONE_SQL)) {
-            conn.getConnectX().setAutoCommit(false);
+                try(PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.SET_MEDIDOR_ZONA_NULL)){
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.execute();
+                    conn.getConnectX().commit();
+                }catch (SQLException ex) {
+                    conn.getConnectX().rollback();
+                    System.err.println(ex.getMessage() + "NULL ERROR");
+                }
 
-            preparedStatement.setInt(1, id);
-            boolean execute = preparedStatement.execute();
-            conn.getConnectX().commit();
+                try(PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.DELETE_METERS_ZONE)){
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.execute();
+                    conn.getConnectX().commit();
+                }catch (SQLException ex) {
+                    conn.getConnectX().rollback();
+                    System.err.println(ex.getMessage() + "METERS DELETE ERRORS");
+                }
+
+                try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.DELETE_ZONE_SQL)) {
+                    conn.getConnectX().setAutoCommit(false);
+
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.execute();
+                    conn.getConnectX().commit();
 
 
+                    System.out.println("Zona com a Primary Key numero " + id + ", eliminada com sucesso!");
+                } catch (SQLException ex) {
+                    conn.getConnectX().rollback();
+                    System.err.println(ex.getMessage() + "ZONE DELETE ERROR");
+                }
+            } else {
+                //Se a verificação for falsa dá um erro e sai
+                System.out.println("Primary Key não encontrada!!");
+            }
 
-            System.out.println("Zona com a Primary Key numero " + id + ", eliminada com sucesso!");
-        } catch (SQLException ex) {
-            conn.getConnectX().rollback();
-            System.err.println(ex.getMessage());
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
         }
+
+        /*
 
         /*String Verify = "SELECT CASE WHEN EXISTS (SELECT fk_zona FROM Meter WHERE fk_zona = ?) THEN 'true' ELSE 'false' END";
         PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(Verify);
@@ -114,63 +152,74 @@ public class DBzone {
         System.out.println("Insira a Primary Key da Zona que deseja alterar: ");
         Integer id = scanner.nextInt();
 
-        conn.getConnectX().setAutoCommit(false);
-        int campo = 0;
-        do {
-            System.out.println("--------Menu de campos--------");
-            System.out.println("1 - Nome da Zona");
-            System.out.println("2 - Medidor da Zona");
-            System.out.println("3 - Comprimento das Condutas da Zona");
-            System.out.println("4 - População da Zona");
-            campo = scanner.nextInt();
-            scanner.nextLine();
 
-        } while (campo < 1 && campo > 4);
+        Statement stmt = conn.getConnectX().createStatement();
 
-        String field = null;
-        Object value = null;
+        String SQL = "SELECT * FROM Zone WHERE id ='" + id + "'";
 
-        try {
-            switch (campo) {
-                case 1:
-                    field = "nome";
-                    System.out.println("Insira o novo nome da Zona: ");
+        ResultSet rs = stmt.executeQuery(SQL);
 
-                    break;
-                case 2:
-                    field = "fk_medidorzona";
-                    System.out.println("Insira o novo Medidor da Zona: ");
 
-                    break;
-                case 3:
-                    field = "totalcond";
-                    System.out.println("Insira o novo comprimento das condutas da Zona: ");
+        if(rs.next()){
+            conn.getConnectX().setAutoCommit(false);
+            int campo = 0;
+            do {
+                System.out.println("--------Menu de campos--------");
+                System.out.println("1 - Nome da Zona");
+                System.out.println("2 - Medidor da Zona");
+                System.out.println("3 - Comprimento das Condutas da Zona");
+                System.out.println("4 - População da Zona");
+                campo = scanner.nextInt();
+                scanner.nextLine();
 
-                    break;
-                case 4:
-                    field = "populacao";
-                    System.out.println("Insira o novo numero de população da Zona: ");
-                    break;
+            } while (campo < 1 && campo > 4);
+
+            String field = null;
+            Object value = null;
+
+            try {
+                switch (campo) {
+                    case 1:
+                        field = "nome";
+                        System.out.println("Insira o novo nome da Zona: ");
+
+                        break;
+                    case 2:
+                        field = "fk_medidorzona";
+                        System.out.println("Insira o novo Medidor da Zona: ");
+
+                        break;
+                    case 3:
+                        field = "totalcond";
+                        System.out.println("Insira o novo comprimento das condutas da Zona: ");
+
+                        break;
+                    case 4:
+                        field = "populacao";
+                        System.out.println("Insira o novo numero de população da Zona: ");
+                        break;
+                }
+                PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(String.format(ConnectionDB.UPDATE_ZONE_SQL, field));
+                if (campo == 1) {
+                    value = scanner.nextLine();
+                } else if (campo == 2) {
+                    value = scanner.nextInt();
+                } else {
+                    value = scanner.nextDouble();
+                }
+
+                preparedStatement.setObject(1, value);
+                preparedStatement.setInt(2, id);
+                preparedStatement.execute();
+                conn.getConnectX().commit();
+
+            } catch (SQLException ex) {
+                conn.getConnectX().rollback();
+                // print SQL exception information
+                printSQLException(ex);
             }
-            PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(String.format(ConnectionDB.UPDATE_ZONE_SQL, field));
-            if (campo == 1) {
-                value = scanner.nextLine();
-            } else if (campo == 2) {
-                value = scanner.nextInt();
-            } else {
-                value = scanner.nextDouble();
-            }
-
-            preparedStatement.setObject(1, value);
-            preparedStatement.setInt(2, id);
-            preparedStatement.execute();
-            conn.getConnectX().commit();
-
-        } catch (SQLException ex){
-            conn.getConnectX().rollback();
-            // print SQL exception information
-            printSQLException(ex);
-        }
+        }else
+            System.out.println("Primary Key não encontrada!!");
     }
 
 

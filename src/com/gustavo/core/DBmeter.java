@@ -95,22 +95,28 @@ public class DBmeter {
         System.out.println("Insira a Primary key do Medidor que deseja dar delete: ");
         Integer id = scanner.nextInt();
 
+        Statement stmt = conn.getConnectX().createStatement();
 
-        try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.DELETE_METER_SQL)) {
-            conn.getConnectX().setAutoCommit(false);
+        String SQL = "SELECT * FROM Meter WHERE id ='" + id + "'";
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-            conn.getConnectX().commit();
-            System.out.println("Medidor com a Primary Key número " + id + ", eliminado com sucesso!");
-        } catch (SQLException ex) {
-            conn.getConnectX().rollback();
-            printSQLException(ex);
-        }
+        ResultSet rs = stmt.executeQuery(SQL);
 
+        if(rs.next()) {
+            try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.DELETE_METER_SQL)) {
+                conn.getConnectX().setAutoCommit(false);
 
+                preparedStatement.setInt(1, id);
+                preparedStatement.execute();
+                conn.getConnectX().commit();
+                System.out.println("Medidor com a Primary Key número " + id + ", eliminado com sucesso!");
+            } catch (SQLException ex) {
+                conn.getConnectX().rollback();
+                printSQLException(ex);
+            }
 
-        return;
+            return;
+        }else
+            System.out.println("Primary Key não encontrada!!");
     }
 
     public void updateMeter(Scanner scanner, ConnectionDB conn) throws SQLException {
@@ -118,65 +124,94 @@ public class DBmeter {
         System.out.println("Insira a Primary Key do Medidor que deseja alterar: ");
         Integer id = scanner.nextInt();
 
-        conn.getConnectX().setAutoCommit(false);
-        int campo = 0;
-        do {
-            System.out.println("--------Menu de campos--------");
-            System.out.println("1 - Nome do Medidor");
-            System.out.println("2 - Zona do Medidor");
-            System.out.println("3 - Supply do Medidor");
-            System.out.println("4 - Codigo de Unidade do Medidor");
-            System.out.println("5 - Tipo de Medidor");
-            campo = scanner.nextInt();
-            scanner.nextLine();
+        Statement stmt = conn.getConnectX().createStatement();
 
-        } while (campo < 1 && campo > 5);
+        String SQL = "SELECT * FROM Meter WHERE id ='" + id + "'";
 
-        String field = null;
-        Object value = null;
+        ResultSet rs = stmt.executeQuery(SQL);
 
-        try {
-            switch (campo) {
-                case 1:
-                    field = "nomemedidor";
-                    System.out.println("Insira o novo nome do Medidor: ");
+        if (rs.next()) {
+            conn.getConnectX().setAutoCommit(false);
+            int campo = 0;
+            do {
+                System.out.println("--------Menu de campos--------");
+                System.out.println("1 - Nome do Medidor");
+                System.out.println("2 - Zona do Medidor");
+                System.out.println("3 - Supply do Medidor");
+                System.out.println("4 - Codigo de Unidade do Medidor");
+                System.out.println("5 - Tipo de Medidor");
+                campo = scanner.nextInt();
+                scanner.nextLine();
 
-                    break;
-                case 2:
-                    field = "fk_zona";
-                    System.out.println("Insira a nova Zona do Medidor: ");
+            } while (campo < 1 && campo > 5);
 
-                    break;
-                case 3:
-                    field = "supply_by";
-                    System.out.println("Insira o novo Supply do Medidor: ");
+            String field = null;
+            Object value = null;
 
-                    break;
-                case 4:
-                    field = "coduni";
-                    System.out.println("Insira o novo Codigo de Unidades do Medidor: ");
-                    break;
-                case 5:
-                    field = "tipomedidor";
-                    System.out.println("Insira o novo Tipo de Medidor: ");
-                    break;
+            try {
+                switch (campo) {
+                    case 1:
+                        field = "nomemedidor";
+                        System.out.println("Insira o novo nome do Medidor: ");
+
+                        break;
+                    case 2:
+                        field = "fk_zona";
+                        System.out.println("Insira a nova Zona do Medidor: ");
+
+
+                        break;
+                    case 3:
+                        field = "supply_by";
+                        System.out.println("Insira o novo Supply do Medidor: ");
+
+                        break;
+                    case 4:
+                        field = "coduni";
+                        System.out.println("Insira o novo Codigo de Unidades do Medidor: ");
+                        break;
+                    case 5:
+                        field = "tipomedidor";
+                        System.out.println("Insira o novo Tipo de Medidor: ");
+                        break;
+                }
+                try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(String.format(ConnectionDB.UPDATE_METER_SQL, field))) {
+                    if (campo == 2 || campo == 5) {
+                        value = scanner.nextInt();
+                    } else {
+                        value = scanner.nextLine();
+                    }
+
+                    preparedStatement.setObject(1, value);
+                    preparedStatement.setInt(2, id);
+                    preparedStatement.execute();
+                    conn.getConnectX().commit();
+                } catch (SQLException ex) {
+                    conn.getConnectX().rollback();
+                    printSQLException(ex);
+                    return;
+                }
+
+
+                try (PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(conn.CLEAR_ZONE_METER_SQL)) {
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.execute();
+                    conn.getConnectX().commit();
+                } catch (SQLException ex) {
+                    conn.getConnectX().rollback();
+                    printSQLException(ex);
+                    return;
+                }
+
+            } catch (SQLException ex) {
+                conn.getConnectX().rollback();
+                printSQLException(ex);
+                return;
             }
-            PreparedStatement preparedStatement = conn.getConnectX().prepareStatement(String.format(ConnectionDB.UPDATE_METER_SQL, field));
-            if (campo == 2 || campo == 5) {
-                value = scanner.nextInt();
-            } else {
-                value = scanner.nextLine();
-            }
 
-            preparedStatement.setObject(1, value);
-            preparedStatement.setInt(2, id);
-            preparedStatement.execute();
-            conn.getConnectX().commit();
 
-        } catch (SQLException ex) {
-            conn.getConnectX().rollback();
-            printSQLException(ex);
-        }
+        } else
+            System.out.println("Primary Key não encontrada!!");
     }
 
 
